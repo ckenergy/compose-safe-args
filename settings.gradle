@@ -1,0 +1,21 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url '/Users/ckenergy/.m2/repository'
+        }
+    }
+}
+rootProject.name = "compose-safe-args"
+include ':app'
+include ':compiler'
+include ':service'

@@ -1,0 +1,89 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id("com.google.devtools.ksp")
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.example.compose.safeargs"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            debuggable true
+            jniDebuggable true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion "1.3.2"
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+android.sourceSets.all { it.java.srcDir("build/generated/ksp/${it.name}/kotlin/") }
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    // Integration with observables
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    implementation "com.google.accompanist:accompanist-swiperefresh:0.27.0"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
+    // Integration with activities
+    implementation 'androidx.activity:activity-compose:1.5.1'
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
+    implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.1'
+
+    // navigation
+    implementation "androidx.navigation:navigation-compose:2.5.2"
+
+    implementation "com.google.code.gson:gson:2.8.7"
+
+    implementation project(':service')
+//    implementation 'com.ckenergy.compose.safeargs:service:1.0.0'
+//    ksp 'com.ckenergy.compose.safeargs:compiler:1.0.0'
+    ksp project(':compiler')
+
+    def accompanist_version = '0.27.0'
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+}
