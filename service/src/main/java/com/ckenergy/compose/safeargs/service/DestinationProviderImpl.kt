@@ -18,7 +18,7 @@ class DestinationProviderImpl<T>(private val route: String, private val clazz: C
         return arrayListOf(
             navArgument(argName) {
                 type = NavType.StringType
-                nullable = false
+                nullable = true
             })
     }
 

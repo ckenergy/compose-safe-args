@@ -4,7 +4,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.ckenergy.compose.safeargs.service.DestinationManager
-import com.example.compose.safeargs.destination.SampleData
+import com.ckenergy.compose.moduleb.OtherModuleSampleData
+import com.example.compose.safeargs.destination.MainData
 
 class MainActions(val navController: NavHostController) {
 
@@ -12,7 +13,12 @@ class MainActions(val navController: NavHostController) {
         from.navigateUp()
     }
 
-    val toSecondFilter: (NavBackStackEntry, SampleData) -> Unit = { from, bean->
+    val toSecond: (NavBackStackEntry, OtherModuleSampleData) -> Unit = { from, bean->
+        from.navigate(DestinationManager.getDestination(bean))
+
+    }
+
+    val toFour: (NavBackStackEntry, MainData) -> Unit = { from, bean->
         from.navigate(DestinationManager.getDestination(bean))
 
     }

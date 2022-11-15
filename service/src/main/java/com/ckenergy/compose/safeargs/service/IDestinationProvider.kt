@@ -16,6 +16,10 @@ interface IDestinationProvider<T> {
 
     fun getDestination(source: T): String
 
+    fun getDestination(): String {
+        return ""
+    }
+
     fun getRoute(): String
 
     fun parseArguments(backStackEntry: NavBackStackEntry): T?

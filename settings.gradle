@@ -19,3 +19,5 @@ rootProject.name = "compose-safe-args"
 include ':app'
 include ':compiler'
 include ':service'
+include ':ModuleA'
+include ':ModuleB'

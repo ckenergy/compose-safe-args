@@ -77,6 +77,8 @@ dependencies {
 //    implementation 'com.ckenergy.compose.safeargs:service:1.0.0'
 //    ksp 'com.ckenergy.compose.safeargs:compiler:1.0.0'
     ksp project(':compiler')
+    implementation project(':ModuleA')
+    implementation project(':ModuleB')
 
     def accompanist_version = '0.27.0'
     implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"

@@ -1,11 +1,11 @@
-package com.example.compose.safeargs.destination
+package com.ckenergy.compose.modulea
 
 import com.ckenergy.compose.safeargs.anotation.SafeArgs
 
 /**
  * Created by chengkai on 2022/11/10.
  */
-@SafeArgs
+@SafeArgs("route_second")
 class SampleData(
     val index: Int,
     val name: String = "",

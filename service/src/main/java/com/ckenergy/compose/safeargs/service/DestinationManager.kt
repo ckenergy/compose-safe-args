@@ -2,7 +2,9 @@ package com.ckenergy.compose.safeargs.service
 
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
+import com.google.gson.Gson
 import java.lang.reflect.InvocationTargetException
+import java.net.URLEncoder
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -10,12 +12,15 @@ import java.util.concurrent.ConcurrentHashMap
  */
 object DestinationManager {
 
-    const val CLASS_SUFFIX = "DestinationProvider"
+    private const val CLASS_SUFFIX = "DestinationProvider"
 
     private val clazzMap = ConcurrentHashMap<Class<*>, Any>()
 
+    /**
+     * 默认不缓存实例
+     */
     @JvmStatic
-    fun <T> getDestinationProvider(clazz: Class<T>): IDestinationProvider<T> {
+    fun <T> getDestinationProvider(clazz: Class<T>, cache: Boolean = false): IDestinationProvider<T> {
         var service = clazzMap[clazz]
         if (service == null) {
             synchronized(this) {
@@ -24,7 +29,8 @@ object DestinationManager {
                     try {
                         val bindClass = Class.forName(clazz.name + CLASS_SUFFIX)
                         service =  bindClass.newInstance().apply {
-                            clazzMap[clazz] = this
+                            if (cache)
+                                clazzMap[clazz] = this
                         }
                     } catch (e: ClassNotFoundException) {
                         e.printStackTrace()
@@ -39,6 +45,9 @@ object DestinationManager {
                     }
                 }
             }
+        }
+        if (service == null) {
+            throw NullPointerException("class ${clazz.simpleName} need add annotation SafeArgs and module add ksp 'com.ckenergy.compose.safeargs:compiler:version'")
         }
         return service as IDestinationProvider<T>
     }
