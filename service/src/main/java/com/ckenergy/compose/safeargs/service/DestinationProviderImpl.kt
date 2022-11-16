@@ -12,7 +12,7 @@ private const val argName = "SafeArgs"
 /**
  * Created by chengkai on 2022/11/10.
  */
-class DestinationProviderImpl<T>(private val route: String, private val clazz: Class<T>) :IDestinationProvider<T> {
+class DestinationProviderImpl<T>(private val route1: String, private val clazz: Class<T>) :IDestinationProvider<T> {
 
     override fun getArguments(): MutableList<NamedNavArgument> {
         return arrayListOf(
@@ -23,11 +23,11 @@ class DestinationProviderImpl<T>(private val route: String, private val clazz: C
     }
 
     override fun getDestination(source: T): String {
-        return "${route}/${URLEncoder.encode(gson.toJson(source))}"
+        return "${route1}/${URLEncoder.encode(gson.toJson(source))}"
     }
 
     override fun getRoute(): String {
-        return "${route}/{${argName}}"
+        return "${route1}/{${argName}}"
     }
 
     override fun parseArguments(backStackEntry: NavBackStackEntry): T? {

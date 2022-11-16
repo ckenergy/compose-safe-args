@@ -9,16 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.*
-import com.ckenergy.compose.safeargs.service.DestinationManager
-import com.ckenergy.compose.safeargs.service.DestinationManager.parseArguments
-import com.ckenergy.compose.safeargs.service.SafeArgsParser
-import com.ckenergy.compose.safeargs.service.SafeArgsSource
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.ckenergy.compose.moduleb.OtherModuleSampleData
 import com.ckenergy.compose.modulea.SampleData
 import com.ckenergy.compose.modulea.SecondPage
 import com.ckenergy.compose.moduleb.ThirdPage
+import com.ckenergy.compose.safeargs.service.*
 import com.example.compose.safeargs.destination.MainData
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
@@ -39,10 +36,10 @@ fun NavGraph(
             MainPage(next = {
                 //don't use SafeArgs
                 //不使用注解传递参数，略麻烦
-                val source = SafeArgsSource(MainDestinations.ROUTE_THIRD)
-                    .addParam("index", 1)
-                    .addParam("list", listOf("1", "2", "3"))
-                navController.navigate(source.destination())
+                navController.navigateWithSafeArgs(MainDestinations.ROUTE_THIRD) {
+                    addParam("index", 1)
+                    addParam("list", listOf("1", "2", "3"))
+                }
             }, four = {
               actions.toFour(it, MainData(1,"four"))
             }, {
@@ -60,19 +57,15 @@ fun NavGraph(
 
         //don't use SafeArgs
         //不使用注解传递参数，略麻烦
-        composableHorizontal(
-            SafeArgsSource.getRoute(MainDestinations.ROUTE_THIRD),
-            arguments = SafeArgsSource.getArguments()
-        ) {
-            val parser = SafeArgsParser(it)
-            val list = parser.getParam<List<String>>("list") ?: listOf()
-            ThirdPage(parser.getParam<Int>("index") ?: 0, list) {
+        composableSafeArgs(MainDestinations.ROUTE_THIRD) { entry, it ->
+            val list: List<String> = it.getParam("list") ?: listOf()
+            ThirdPage(it.getParam<Int>("index") ?: 0, list) {
                 val data = OtherModuleSampleData(
                     listOf("1", "2", "3"),
                     "OtherModule",
                     1
                 )
-                actions.toSecond(it, data)
+                actions.toSecond(entry, data)
             }
         }
 
@@ -87,8 +80,19 @@ fun NavGraph(
 }
 
 @ExperimentalAnimationApi
+fun NavGraphBuilder.composableSafeArgs(route: String, content: @Composable (NavBackStackEntry, SafeArgsParser) -> Unit) {
+    composableHorizontal(
+        SafeArgsSource.getRoute(route),
+        arguments = SafeArgsSource.getArguments()
+    ) {
+        val parser = it.parseSafeArgs()
+        content(it, parser)
+    }
+}
+
+@ExperimentalAnimationApi
 inline fun <reified T> NavGraphBuilder.composable(crossinline content: @Composable (NavBackStackEntry, T?) -> Unit) {
-    val provider = DestinationManager.getDestinationProvider(T::class.java)
+    val provider = destinationProvider<T>()
     composableHorizontal(
         route = provider.getRoute(),
         arguments = provider.getArguments()

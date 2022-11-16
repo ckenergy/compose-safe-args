@@ -2,6 +2,7 @@ package com.ckenergy.compose.safeargs.service
 
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import java.lang.reflect.InvocationTargetException
 import java.net.URLEncoder
@@ -64,9 +65,12 @@ object DestinationManager {
         return getDestinationProvider(T::class.java).getRoute()
     }
 
-    inline fun <reified T> NavBackStackEntry.parseArguments(): T? {
-        return getDestinationProvider(T::class.java).parseArguments(this)
-    }
-
 }
 
+inline fun <reified T> NavBackStackEntry.parseArguments(): T? {
+    return DestinationManager.getDestinationProvider(T::class.java).parseArguments(this)
+}
+
+inline fun <reified T> destinationProvider(): IDestinationProvider<T> {
+    return DestinationManager.getDestinationProvider(T::class.java)
+}
