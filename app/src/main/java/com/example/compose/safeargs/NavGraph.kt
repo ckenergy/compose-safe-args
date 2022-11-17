@@ -32,7 +32,7 @@ fun NavGraph(
         navController = navController,
         startDestination = startDestination
     ) {
-        composableHorizontal(MainDestinations.ROUTE_MAIN) {
+        composableHorizontal1(MainDestinations.ROUTE_MAIN) {
             MainPage(next = {
                 //don't use SafeArgs
                 //不使用注解传递参数，略麻烦
@@ -81,7 +81,7 @@ fun NavGraph(
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.composableSafeArgs(route: String, content: @Composable (NavBackStackEntry, SafeArgsParser) -> Unit) {
-    composableHorizontal(
+    composableHorizontal1(
         SafeArgsSource.getRoute(route),
         arguments = SafeArgsSource.getArguments()
     ) {
@@ -93,13 +93,42 @@ fun NavGraphBuilder.composableSafeArgs(route: String, content: @Composable (NavB
 @ExperimentalAnimationApi
 inline fun <reified T> NavGraphBuilder.composable(crossinline content: @Composable (NavBackStackEntry, T?) -> Unit) {
     val provider = destinationProvider<T>()
-    composableHorizontal(
+    composableHorizontal1(
         route = provider.getRoute(),
         arguments = provider.getArguments()
     ) {
         val deviceFilterBean: T? = it.parseArguments()
         content(it, deviceFilterBean)
     }
+}
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.composableHorizontal1(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
+) {
+    composable(
+        route = route,
+        arguments = arguments,
+        deepLinks = deepLinks,
+        enterTransition = {
+            slideInHorizontally(initialOffsetX = { 1000 })
+        },
+        popEnterTransition = {
+            slideInHorizontally(initialOffsetX = { -1000 })
+        },
+        popExitTransition = {
+            slideOutHorizontally(targetOffsetX = { 1000 })
+
+        },
+        exitTransition = {
+            slideOutHorizontally(targetOffsetX = { -1000 })
+
+        },
+        content = content,
+    )
 }
 
 @ExperimentalAnimationApi
@@ -114,7 +143,7 @@ fun NavGraphBuilder.composableHorizontal(
         visibilityThreshold = IntOffset.VisibilityThreshold
     )
 
-    this@composableHorizontal.composable(
+    composable(
         route = route,
         arguments = arguments,
         deepLinks = deepLinks,
