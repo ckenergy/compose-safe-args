@@ -8,7 +8,7 @@ package com.ckenergy.compose.safeargs.anotation
     AnnotationTarget.CLASS)
 annotation class SafeArgs(
     /**
-     * 路由的名字
-     *
+     * 路由的名字 为空则是
+     * [routeName]
      */
     val routeName: String = "" )
