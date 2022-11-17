@@ -25,7 +25,7 @@ val toSecond: (NavBackStackEntry, SampleData) -> Unit = { from, bean->
         navController.navigateWithSafeArgs(from, bean)
     }
 ```
-### 因为使用的是Gson来序列化，所以SampleData和OtherModuleSampleData名字和类型对应上，注解上的route_name一致就能获取到数据,模块间通信使用。当然也可以把SampleData下沉到基础模块
+#### 因为使用的是Gson来序列化，所以SampleData和OtherModuleSampleData名字和类型对应上，注解上的route_name一致就能获取到数据,模块间通信使用。当然也可以把SampleData下沉到基础模块
 ```kotlin
 @SafeArgs("route_name")
 class OtherModuleSampleData(

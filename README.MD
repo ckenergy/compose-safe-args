@@ -1,5 +1,5 @@
 # Safe Args 
-### Safe Args is for compose navigation to transport data easyer </p>
+### Safe Args is for compose navigation to transport data easily </p>
 
 [文档还是中文的好](README_CN.MD)
 
@@ -27,8 +27,8 @@ val toSecond: (NavBackStackEntry, SampleData) -> Unit = { from, bean->
         navController.navigateWithSafeArgs(from, bean)
     }
 ```
-### Safe Args use Gson format data， so class SampleData can transform to class OtherModuleSampleData when their field name and type are the same, and route_name need equally
-### although two module are dependencies SampleData class
+#### Safe Args use Gson format data， so class SampleData can transform to class OtherModuleSampleData when their field name and type are the same, and route_name need equally
+#### although two module are dependencies SampleData class is sample way
 ```kotlin
 @SafeArgs("route_name")
 class OtherModuleSampleData(
@@ -38,7 +38,7 @@ class OtherModuleSampleData(
 )
 ```
 
-### do'nt use **SafeArgs** annotation
+### don't use **SafeArgs** annotation
 
 in **NavHost** 
 ```kotlin 
