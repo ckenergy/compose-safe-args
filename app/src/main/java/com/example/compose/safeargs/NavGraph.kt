@@ -9,15 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.*
-import androidx.navigation.compose.NavHost
 import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
 import com.ckenergy.compose.moduleb.OtherModuleSampleData
 import com.ckenergy.compose.modulea.SampleData
 import com.ckenergy.compose.modulea.SecondPage
 import com.ckenergy.compose.moduleb.ThirdPage
 import com.ckenergy.compose.safeargs.service.*
 import com.example.compose.safeargs.destination.MainData
+import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -33,7 +32,7 @@ fun NavGraph(
         navController = navController,
         startDestination = startDestination
     ) {
-        composableHorizontal1(MainDestinations.ROUTE_MAIN) {
+        composableHorizontal(MainDestinations.ROUTE_MAIN) {
             MainPage(next = {
                 //don't use SafeArgs
                 //不使用注解传递参数，略麻烦
@@ -82,7 +81,7 @@ fun NavGraph(
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.composableSafeArgs(route: String, content: @Composable (NavBackStackEntry, SafeArgsParser) -> Unit) {
-    composableHorizontal1(
+    composableHorizontal(
         SafeArgsSource.getRoute(route),
         arguments = SafeArgsSource.getArguments()
     ) {
@@ -94,42 +93,13 @@ fun NavGraphBuilder.composableSafeArgs(route: String, content: @Composable (NavB
 @ExperimentalAnimationApi
 inline fun <reified T> NavGraphBuilder.composableSafeArgs(crossinline content: @Composable (NavBackStackEntry, T?) -> Unit) {
     val provider = destinationProvider<T>()
-    composableHorizontal1(
+    composableHorizontal(
         route = provider.getRoute(),
         arguments = provider.getArguments()
     ) {
         val deviceFilterBean: T? = it.parseArguments()
         content(it, deviceFilterBean)
     }
-}
-
-@ExperimentalAnimationApi
-fun NavGraphBuilder.composableHorizontal1(
-    route: String,
-    arguments: List<NamedNavArgument> = emptyList(),
-    deepLinks: List<NavDeepLink> = emptyList(),
-    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
-) {
-    composable(
-        route = route,
-        arguments = arguments,
-        deepLinks = deepLinks,
-        enterTransition = {
-            slideInHorizontally(initialOffsetX = { 1000 })
-        },
-        popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { -1000 })
-        },
-        popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { 1000 })
-
-        },
-        exitTransition = {
-            slideOutHorizontally(targetOffsetX = { -1000 })
-
-        },
-        content = content,
-    )
 }
 
 @ExperimentalAnimationApi

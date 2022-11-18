@@ -5,6 +5,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.gson.Gson
+import java.net.URLDecoder
 import java.net.URLEncoder
 
 private val gson = Gson()
@@ -32,7 +33,7 @@ class DestinationProviderImpl<T>(private val route1: String, private val clazz: 
 
     override fun parseArguments(backStackEntry: NavBackStackEntry): T? {
         val data = backStackEntry.arguments?.getString(argName)
-        return gson.fromJson(data, clazz)
+        return gson.fromJson(URLDecoder.decode(data), clazz)
     }
 
 }

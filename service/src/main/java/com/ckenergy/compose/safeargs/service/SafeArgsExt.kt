@@ -1,8 +1,11 @@
 package com.ckenergy.compose.safeargs.service
 
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
 
 /**
  * Created by chengkai on 2022/11/16.
@@ -26,6 +29,17 @@ fun NavBackStackEntry.parseSafeArgs(): SafeArgsParser {
 fun NavBackStackEntry.navigateInResumed(navigate: () -> Unit) {
     if (lifecycleIsResumed()) {
         navigate()
+    }
+}
+
+inline fun <reified T> NavGraphBuilder.composableSafeArgs(crossinline content: @Composable (NavBackStackEntry, T?) -> Unit) {
+    val provider = destinationProvider<T>()
+    composable(
+        route = provider.getRoute(),
+        arguments = provider.getArguments()
+    ) {
+        val data: T? = it.parseArguments()
+        content(it, data)
     }
 }
 
