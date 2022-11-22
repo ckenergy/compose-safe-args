@@ -3,6 +3,12 @@
 
 ## example
 
+依赖中加入
+```groovy
+implementation 'io.github.ckenergy.compose.safeargs:service:1.0.0'
+ksp 'io.github.ckenergy.compose.safeargs:compiler:1.0.0'
+```
+
 在你要传递的实体类上加上SafeArgs注解
 ```kotlin 
 @SafeArgs("route_name") 
