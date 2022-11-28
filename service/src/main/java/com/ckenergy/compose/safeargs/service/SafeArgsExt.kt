@@ -10,16 +10,20 @@ import androidx.navigation.compose.composable
 /**
  * Created by chengkai on 2022/11/16.
  */
-fun NavHostController.navigateWithSafeArgs(route: String, builder: SafeArgsSource.() -> Unit) {
+fun NavHostController.navigateWithSafeArgsInResumed(route: String, builder: SafeArgsSource.() -> Unit) {
     val source = SafeArgsSource(route)
     builder.invoke(source)
     navigate(source.destination())
 }
 
-inline fun <reified T> NavHostController.navigateWithSafeArgs(from: NavBackStackEntry, t: T) {
+inline fun <reified T> NavHostController.navigateWithSafeArgsInResumed(from: NavBackStackEntry, t: T) {
     from.navigateInResumed {
         navigate(DestinationManager.getDestination(t))
     }
+}
+
+inline fun <reified T> NavHostController.navigateWithSafeArgs(t: T) {
+    navigate(DestinationManager.getDestination(t))
 }
 
 fun NavBackStackEntry.parseSafeArgs(): SafeArgsParser {
@@ -43,10 +47,5 @@ inline fun <reified T> NavGraphBuilder.composableSafeArgs(crossinline content: @
     }
 }
 
-/**
- * If the lifecycle is not resumed it means this NavBackStackEntry already processed a nav event.
- *
- * This is used to de-duplicate navigation events.
- */
 private fun NavBackStackEntry.lifecycleIsResumed() =
     this.lifecycle.currentState == Lifecycle.State.RESUMED

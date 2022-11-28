@@ -7,8 +7,8 @@
 
 add in dependencies
 ```groovy
-implementation 'io.github.ckenergy.compose.safeargs:service:1.0.0'
-ksp 'io.github.ckenergy.compose.safeargs:compiler:1.0.0'
+implementation 'io.github.ckenergy.compose.safeargs:service:1.0.1'
+ksp 'io.github.ckenergy.compose.safeargs:compiler:1.0.1'
 ```
 
 add **SafeArgs** annotation in the class where you went transport data 

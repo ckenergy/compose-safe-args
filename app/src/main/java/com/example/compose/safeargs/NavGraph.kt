@@ -36,7 +36,7 @@ fun NavGraph(
             MainPage(next = {
                 //don't use SafeArgs
                 //不使用注解传递参数，略麻烦
-                navController.navigateWithSafeArgs(MainDestinations.ROUTE_THIRD) {
+                navController.navigateWithSafeArgsInResumed(MainDestinations.ROUTE_THIRD) {
                     addParam("index", 1)
                     addParam("list", listOf("1", "2", "3"))
                 }

@@ -4,7 +4,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.ckenergy.compose.moduleb.OtherModuleSampleData
 import com.ckenergy.compose.safeargs.service.navigateInResumed
-import com.ckenergy.compose.safeargs.service.navigateWithSafeArgs
+import com.ckenergy.compose.safeargs.service.navigateWithSafeArgsInResumed
 import com.example.compose.safeargs.destination.MainData
 
 class MainActions(val navController: NavHostController) {
@@ -14,11 +14,11 @@ class MainActions(val navController: NavHostController) {
     }
 
     val toSecond: (NavBackStackEntry, OtherModuleSampleData) -> Unit = { from, bean->
-        navController.navigateWithSafeArgs(from, bean)
+        navController.navigateWithSafeArgsInResumed(from, bean)
     }
 
     val toFour: (NavBackStackEntry, MainData) -> Unit = { from, bean->
-        navController.navigateWithSafeArgs(from, bean)
+        navController.navigateWithSafeArgsInResumed(from, bean)
     }
 
     private fun NavBackStackEntry.navigate(route: String) {
