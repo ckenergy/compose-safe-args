@@ -22,7 +22,7 @@ fun FourPage(
         modifier = Modifier.background(Color.White),
         appBar = {
             SampleAppBar(
-                title = data.name,
+                title = data.name ?: "",
                 onBack = onBack
             )
         },

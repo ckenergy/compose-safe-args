@@ -12,6 +12,8 @@ import java.net.URLEncoder
  */
 interface IDestinationProvider<T> {
 
+    var gson: Gson?
+
     fun getArguments(): MutableList<NamedNavArgument>
 
     fun getDestination(source: T): String

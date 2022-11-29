@@ -3,9 +3,9 @@ package com.example.compose.safeargs
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.ckenergy.compose.moduleb.OtherModuleSampleData
-import com.ckenergy.compose.safeargs.service.navigateInResumed
-import com.ckenergy.compose.safeargs.service.navigateWithSafeArgsInResumed
+import com.ckenergy.compose.safeargs.service.*
 import com.example.compose.safeargs.destination.MainData
+import com.google.gson.GsonBuilder
 
 class MainActions(val navController: NavHostController) {
 
@@ -17,8 +17,12 @@ class MainActions(val navController: NavHostController) {
         navController.navigateWithSafeArgsInResumed(from, bean)
     }
 
-    val toFour: (NavBackStackEntry, MainData) -> Unit = { from, bean->
-        navController.navigateWithSafeArgsInResumed(from, bean)
+    val toFour: (NavBackStackEntry, MainData) -> Unit = { _, bean ->
+        val destinationProvider = DestinationManager.getDestinationProvider(MainData::class.java)
+        destinationProvider.gson = GsonBuilder()
+            .excludeFieldsWithoutExposeAnnotation()
+            .create()
+        navController.navigate(destinationProvider.getDestination(bean))
     }
 
     private fun NavBackStackEntry.navigate(route: String) {
